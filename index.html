@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Ипотечный калькулятор</title>
     <style>
 	
         .calculator {
@@ -10,6 +9,12 @@
             justify-content: space-between;
             align-items: flex-start;
         }
+		.calculator {
+    width: 900px;
+    height: 1000px;
+	margin: 20px;
+}
+
         .column {
             flex: 1;
         }
@@ -21,14 +26,27 @@
     border: 1px solid #ccc;
 	border-radius: 5px;
         }
+		.payment-type-button {
+    background-color: #ccc; /* Цвет фона по умолчанию */
+    color: #333; /* Цвет текста по умолчанию */
+    padding: 5px 10px; /* Размер отступов кнопки */
+    border: none;
+    cursor: pointer;
+}
+
+.payment-type-button.active {
+    background-color: #ccc; /* Цвет фона при активном состоянии */
+    color: #fff; /* Цвет текста при активном состоянии */
+}
+
 		
 		input[type="number"] {
     position: relative;
-    height: 48px;
     border: 1px solid #ccc; /* Замените на нужный цвет */
     background: #fff; /* Замените на нужный цвет */
     border-radius: 5px; /* Замените на нужный радиус */
     flex: 1 1 auto;
+	padding: 10px;
 }
 
 input[type="number"]::placeholder {
@@ -66,7 +84,7 @@ label {
 }
 
 .column input {
-    height: 48px;
+    height: 25px;
 	color: #2d3487;
     border: 1px solid $gray-30;
     background: $white;
@@ -130,7 +148,7 @@ label {
 }
 
 .result span {
-    flex: 1;
+    flex: 0;
     text-align: right;
 }
 
@@ -164,8 +182,7 @@ label {
     </style>
 </head>
 <body>
-    <h1>Ипотечный калькулятор</h1>
-    
+ 
     <div class="calculator">
         <div class="column">
             <label for="propertyPrice">Цена недвижимости (€):</label>
@@ -198,7 +215,7 @@ label {
 
         
        <div class="summary">
-    <h2>Результаты</h2>
+    
     <div class="result">
         <label>Первый взнос:</label>
         <span id="initialPaymentResult">€0</span>
