@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ипотечный калькулятор</title>
+    <style>
+	
+        .calculator {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        .column {
+            flex: 1;
+        }
+        .payment-type-buttons button {
+            margin: 5px;
+			    color: #2d3487;
+    padding: 18px;
+    background: transparent;
+    border: 1px solid #ccc;
+	border-radius: 5px;
+        }
+		
+		input[type="number"] {
+    position: relative;
+    height: 48px;
+    border: 1px solid #ccc; /* Замените на нужный цвет */
+    background: #fff; /* Замените на нужный цвет */
+    border-radius: 5px; /* Замените на нужный радиус */
+    flex: 1 1 auto;
+}
+
+input[type="number"]::placeholder {
+    text-overflow: ellipsis;
+}
+
+label {
+    color: #888; /* Замените на желаемый цвет текста */
+    display: inline-block;
+    position: relative;
+    top: calc(1rem - 4px);
+    transition: transform 0.25s, font-size 0.25s;
+    transform-origin: left;
+    white-space: nowrap;
+    pointer-events: none;
+}
+.input-group {
+    display: flex;
+    align-items: center;
+}
+
+.payment-type-buttons {
+    margin-left: 5px; /* Расстояние между кнопками и полем ввода */
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+	flex: 0 0 30%;
+}
+
+.column label {
+    display: block;
+    margin-bottom: 25px;
+}
+
+.column input {
+    height: 48px;
+	color: #2d3487;
+    border: 1px solid $gray-30;
+    background: $white;
+    border-radius: $border-radius;
+    ::placeholder {
+        text-overflow: ellipsis;
+    }
+    // Остальные стили для input
+}
+
+.payment-type-buttons {
+    display: flex;
+    // Остальные стили для кнопок
+}
+		
+.styled-select {
+    height: 48px;
+    border:  1px solid #ccc;
+    background: $white;
+    border-radius: 5px;
+    ::placeholder {
+        text-overflow: ellipsis;
+	color: #2d3487
+    }
+    // Остальные стили, совпадающие с input
+}
+
+.summary {
+ padding: 22px;
+    border: 1px solid #ccc;
+    border-radius: 32px;
+    background-color: transparent;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 43px;
+    color: #2d3487;
+	flex: 0 1 70%;
+}
+
+.summary p {
+  margin: 10px 0;
+  font-size: 18px;
+}
+
+/* Пример стиля для заголовка результатов */
+.summary h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #2d3487;
+}
+
+.result {
+    display: flex;
+    justify-content: space-between;
+	    padding: 4px;
+
+}
+
+.result label {
+    flex: 1;
+	color: #2d3487;
+}
+
+.result span {
+    flex: 1;
+    text-align: right;
+}
+
+#initialPaymentResult,
+#loanAmountResult,
+#creditContractFeeResult,
+#totalAmountResult,
+#annualInterestRateResult,
+#accountServiceFeeResult,
+#mortgageRegistrationFeeResult,
+#monthlyPaymentResult {
+  display: flex;
+  justify-content: space-between; /* Разместите значение справа */
+  align-items: center; /* Выровняйте текст и значение по центру вертикально */
+  margin: 5px 0; /* Добавьте немного отступа между строками */
+  border-top: 1px solid $gray-30; /* Добавьте разделительные линии между результатами */
+  color: #2d3487 ;
+  
+}
+
+
+.value {
+    text-align: right;
+}
+
+
+
+/* Дополнительные стили по вашему усмотрению */
+
+	
+    </style>
+</head>
+<body>
+    <h1>Ипотечный калькулятор</h1>
+    
+    <div class="calculator">
+        <div class="column">
+            <label for="propertyPrice">Цена недвижимости (€):</label>
+            <input type="number" id="propertyPrice"  required value="65000"><br>
+
+            <label for="loanTerm">Срок возврата кредита (лет):</label>
+            <select id="loanTerm" class="styled-select" required>
+                <option value="5">5 лет</option>
+                <option value="10">10 лет</option>
+                <option value="15">15 лет</option>
+                <option value="20">20 лет</option>
+                <option value="25">25 лет</option>
+                <option value="30">30 лет</option>
+            </select><br>
+
+            <label for="bankInterestRate">Банковская процентная ставка в год (%):</label>
+            <input type="number" id="bankInterestRate" required value="1.8"><br>
+
+    
+        <label for="initialPaymentValue">Первый взнос:</label>
+        <div class="input-group">
+            <input type="number" id="initialPaymentValue" required value="15">
+            <div class="payment-type-buttons">
+                <button id="percentage" class="payment-type-button active">%</button>
+                <button id="euro" class="payment-type-button">€</button>
+            </div>
+        </div>
+    </div>
+
+
+        
+       <div class="summary">
+    <h2>Результаты</h2>
+    <div class="result">
+        <label>Первый взнос:</label>
+        <span id="initialPaymentResult">€0</span>
+    </div>
+    <div class="result">
+        <label>Сумма кредита:</label>
+        <span id="loanAmountResult">€0</span>
+    </div>
+    <div class="result">
+        <label>Плата за кредитный договор:</label>
+        <span id="creditContractFeeResult">€0</span>
+    </div>
+    <div class="result">
+        <label>Общая сумма к выплате:</label>
+        <span id="totalAmountResult">€0</span>
+    </div>
+    <div class="result">
+        <label>Годовая процентная ставка (ГПС):</label>
+        <span id="annualInterestRateResult">0%</span>
+    </div>
+    <div class="result">
+        <label>Обслуживание расчетного счета:</label>
+        <span id="accountServiceFeeResult">€0</span>
+    </div>
+    <div class="result">
+        <label>Регистрация ипотеки в земельной книге:</label>
+        <span id="mortgageRegistrationFeeResult">€0</span>
+    </div>
+    <div class="result">
+        <label>Ежемесячный платеж:</label>
+        <span id="monthlyPaymentResult">€0</span>
+    </div>
+</div>
+    </div>
+    
+    <script>
+        const propertyPriceInput = document.getElementById("propertyPrice");
+        const loanTermSelect = document.getElementById("loanTerm");
+        const bankInterestRateInput = document.getElementById("bankInterestRate");
+        const initialPaymentTypeButtons = document.querySelectorAll(".payment-type-button");
+        const initialPaymentValueInput = document.getElementById("initialPaymentValue");
+        
+        // Добавляем обработчики событий для кнопок выбора типа первого взноса
+        initialPaymentTypeButtons.forEach(button => {
+            button.addEventListener("click", () => {
+                initialPaymentTypeButtons.forEach(b => b.classList.remove("active"));
+                button.classList.add("active");
+                calculateMortgage();
+            });
+        });
+
+        function calculateMortgage() {
+            var propertyPrice = parseFloat(propertyPriceInput.value);
+            var loanTerm = parseInt(loanTermSelect.value);
+            var bankInterestRate = parseFloat(bankInterestRateInput.value);
+            var initialPaymentType = document.querySelector(".payment-type-button.active").id;
+            var initialPaymentValue = parseFloat(initialPaymentValueInput.value);
+
+            // Рассчитываем сумму кредита
+            var loanAmount = propertyPrice;
+
+            // Рассчитываем первый взнос
+            var initialPayment = 0;
+            if (initialPaymentType === "percentage") {
+                initialPayment = (propertyPrice * initialPaymentValue) / 100;
+            } else {
+                initialPayment = initialPaymentValue;
+            }
+            
+            loanAmount = propertyPrice - initialPayment;
+
+            // Рассчитываем остальные параметры
+            var creditContractFee = 0;
+            var totalAmount = loanAmount + creditContractFee;
+            var annualInterestRate = (bankInterestRate + 4.06).toFixed(2); // Добавляем EURIBOR
+            var accountServiceFee = 0;
+            var mortgageRegistrationFee = 0;
+            var monthlyPayment = 0;
+
+            // Рассчитываем ежемесячный платеж
+            var monthlyInterestRate = (annualInterestRate / 100) / 12;
+            var totalMonths = loanTerm * 12;
+            if (totalMonths > 0) {
+                monthlyPayment = (loanAmount * monthlyInterestRate) / (1 - Math.pow(1 + monthlyInterestRate, -totalMonths));
+            }
+
+            // Обновляем элементы с результатами
+            document.getElementById("initialPaymentResult").textContent = `€${initialPayment.toFixed(2)}`;
+            document.getElementById("loanAmountResult").textContent = `€${loanAmount.toFixed(2)}`;
+            document.getElementById("creditContractFeeResult").textContent = `€${creditContractFee.toFixed(2)}`;
+            document.getElementById("totalAmountResult").textContent = `€${totalAmount.toFixed(2)}`;
+            document.getElementById("annualInterestRateResult").textContent = `${annualInterestRate}%`;
+            document.getElementById("accountServiceFeeResult").textContent = `€${accountServiceFee.toFixed(2)}`;
+            document.getElementById("mortgageRegistrationFeeResult").textContent = `€${mortgageRegistrationFee.toFixed(2)}`;
+            document.getElementById("monthlyPaymentResult").textContent = `€${monthlyPayment.toFixed(2)}`;
+        }
+
+        // Добавляем обработчики событий для автоматического рассчета при изменении данных
+        propertyPriceInput.addEventListener("input", calculateMortgage);
+        loanTermSelect.addEventListener("change", calculateMortgage);
+        bankInterestRateInput.addEventListener("input", calculateMortgage);
+        initialPaymentValueInput.addEventListener("input", calculateMortgage);
+
+        // Вызываем функцию рассчета при загрузке страницы
+        calculateMortgage();
+    </script>
+</body>
+</html>
